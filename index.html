@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analog Clock</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+      color: #ffffff;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #e0f7df;
+      flex-direction: column;
+    }
+
+    .clock {
+      position: relative;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      border: 5px solid rgba(255, 255, 255, 0.5);
+      background-color: #102e2b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .clock::before {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background: white;
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .hand {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hand span {
+      position: absolute;
+      font-size: 20px;
+      color: white;
+    }
+
+    .hour {
+      height: 60%;
+    }
+
+    .minute {
+      height: 70%;
+    }
+
+    .second {
+      height: 90%;
+    }
+
+    .hour span {
+      font-size: 20px;
+      transform: translateY(calc(-38px * var(--depth)));
+      color: #ff3d58;
+      font-weight: bold;
+    }
+
+    .minute span {
+      font-size: 20px;
+      transform: translateY(calc(-52px * var(--depth)));
+      font-family: 'Digital', sans-serif;
+      color: #00a6ff;
+      font-weight: bold;
+    }
+
+    .second span {
+      font-size: calc(14px - 1 * var(--depth));
+      transform: translateY(calc(-65px * var(--depth)));
+    }
+
+    .numbers {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .numbers div {
+      position: absolute;
+      font-size: 24px;
+      color: white;
+    }
+
+    .numbers .number {
+      font-size: 50px;
+      font-weight: bold;
+      transform-origin: center;
+    }
+
+    .numbers .dash {
+      font-size: 12px;
+    }
+
+    /* Postavljanje brojeva u krug */
+    .numbers .number:nth-child(1) { transform: rotate(0deg) translateY(-300px) rotate(0deg); }
+    .numbers .number:nth-child(2) { transform: rotate(30deg) translateY(-300px) rotate(-30deg); }
+    .numbers .number:nth-child(3) { transform: rotate(60deg) translateY(-300px) rotate(-60deg); }
+    .numbers .number:nth-child(4) { transform: rotate(90deg) translateY(-300px) rotate(-90deg); }
+    .numbers .number:nth-child(5) { transform: rotate(120deg) translateY(-300px) rotate(-120deg); }
+    .numbers .number:nth-child(6) { transform: rotate(150deg) translateY(-300px) rotate(-150deg); }
+    .numbers .number:nth-child(7) { transform: rotate(180deg) translateY(-300px) rotate(-180deg); }
+    .numbers .number:nth-child(8) { transform: rotate(210deg) translateY(-300px) rotate(-210deg); }
+    .numbers .number:nth-child(9) { transform: rotate(240deg) translateY(-300px) rotate(-240deg); }
+    .numbers .number:nth-child(10) { transform: rotate(270deg) translateY(-300px) rotate(-270deg); }
+    .numbers .number:nth-child(11) { transform: rotate(300deg) translateY(-300px) rotate(-300deg); }
+    .numbers .number:nth-child(12) { transform: rotate(330deg) translateY(-300px) rotate(-330deg); }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 20px;
+      justify-content: center; /* Centriranje horizontalno */
+      align-items: center; /* Centriranje vertikalno */
+      width: 100%;
+    }
+
+    .button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+
+    .manual-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .manual-controls input {
+      width: 100px;
+      height: 35px;
+      text-align: center;
+      color: blacK;
+      border: 1.5px;
+      border-radius: 5px;
+      border-style: solid;
+      border-color: #4CAF50;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="clock">
+      <div class="numbers">
+        <div class="number">12</div>
+        <div class="number">1</div>
+        <div class="number">2</div>
+        <div class="number">3</div>
+        <div class="number">4</div>
+        <div class="number">5</div>
+        <div class="number">6</div>
+        <div class="number">7</div>
+        <div class="number">8</div>
+        <div class="number">9</div>
+        <div class="number">10</div>
+        <div class="number">11</div>
+      </div>
+      <div class="hand hour" id="hour">
+        <span>12</span>
+      </div>
+      <div class="hand minute" id="minute">
+        <span>59</span>
+      </div>
+      <div class="hand second" id="second">
+        <span>59</span>
+      </div>
+    </div>
+
+    <!-- Manuelno podešavanje -->
+    <div class="controls">
+      <div class="manual-controls">
+        <input type="number" id="manualHour" min="0" max="12" placeholder="Sat" />
+        <input type="number" id="manualMinute" min="0" max="59" placeholder="Minut" />
+        <input type="number" id="manualSecond" min="0" max="59" placeholder="Sekunde" />
+      </div>
+      <button class="button" id="setManualTime">Postavi vreme</button>
+      <button class="button" id="resetTime">Resetuj vreme</button>
+    </div>
+  </div>
+
+  <script>
+    const hourHand = document.getElementById('hour');
+    const minuteHand = document.getElementById('minute');
+    const secondHand = document.getElementById('second');
+
+    let manualHour = 0;
+    let manualMinute = 0;
+    let manualSecond = 0;
+
+    function updateClock() {
+      const now = new Date();
+      const hours = manualHour || now.getHours() % 12;
+      const minutes = manualMinute || now.getMinutes();
+      const seconds = manualSecond || now.getSeconds();
+
+      const hourRotation = (360 / 12) * hours + (minutes / 60) * 30;
+      const minuteRotation = (360 / 60) * minutes;
+      const secondRotation = (360 / 60) * seconds;
+
+      hourHand.style.transform = `rotate(${hourRotation}deg)`;
+      minuteHand.style.transform = `rotate(${minuteRotation}deg)`;
+      secondHand.style.transform = `rotate(${secondRotation}deg)`;
+
+      hourHand.innerHTML = generateHourNumbers(hours);
+      minuteHand.innerHTML = generateMinuteNumbers(minutes);
+      secondHand.innerHTML = generateSecondNumbers(seconds);
+    }
+
+    function generateHourNumbers(hour) {
+      return Array.from({ length: 6 }, (_, i) => `<span style="--depth: ${i}">${hour}</span>`).join('');
+    }
+
+    function generateMinuteNumbers(minute) {
+      return Array.from({ length: 6 }, (_, i) => `<span style="--depth: ${i}">${minute}</span>`).join('');
+    }
+
+    function generateSecondNumbers(second) {
+      return Array.from({ length: 6 }, (_, i) => `<span style="--depth: ${i}">${second}</span>`).join('');
+    }
+
+    // Set time manually based on input
+    document.getElementById('setManualTime').addEventListener('click', () => {
+      manualHour = parseInt(document.getElementById('manualHour').value) || 0;
+      manualMinute = parseInt(document.getElementById('manualMinute').value) || 0;
+      manualSecond = parseInt(document.getElementById('manualSecond').value) || 0;
+      updateClock();
+    });
+
+    // Reset time to current time
+    document.getElementById('resetTime').addEventListener('click', () => {
+      manualHour = 0;
+      manualMinute = 0;
+      manualSecond = 0;
+      updateClock();
+    });
+
+    // Update clock every second
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
