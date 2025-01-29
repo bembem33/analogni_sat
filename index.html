@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analog Clock</title>
+  <title>Analogno-digitalni sat</title>
   <style>
     * {
       margin: 0;
@@ -207,7 +207,7 @@
       </div>
     </div>
 
-    <!-- Manuelno podešavanje -->
+    /* Manuelno podešavanje */
     <div class="controls">
       <div class="manual-controls">
         <input type="number" id="manualHour" min="0" max="12" placeholder="Sat" />
@@ -259,7 +259,7 @@
       return Array.from({ length: 6 }, (_, i) => `<span style="--depth: ${i}">${second}</span>`).join('');
     }
 
-    // Set time manually based on input
+    /* Manuelno ptavljanje vremena */
     document.getElementById('setManualTime').addEventListener('click', () => {
       manualHour = parseInt(document.getElementById('manualHour').value) || 0;
       manualMinute = parseInt(document.getElementById('manualMinute').value) || 0;
@@ -267,7 +267,7 @@
       updateClock();
     });
 
-    // Reset time to current time
+    /* Resetovanje vremena na trenutno vreme */
     document.getElementById('resetTime').addEventListener('click', () => {
       manualHour = 0;
       manualMinute = 0;
@@ -275,7 +275,7 @@
       updateClock();
     });
 
-    // Update clock every second
+    /* ažuriranje sata na svaki sekund */
     setInterval(updateClock, 1000);
     updateClock();
   </script>
