@@ -259,7 +259,6 @@
       return Array.from({ length: 6 }, (_, i) => `<span style="--depth: ${i}">${second}</span>`).join('');
     }
 
-    /* Manuelno ptavljanje vremena */
     document.getElementById('setManualTime').addEventListener('click', () => {
       manualHour = parseInt(document.getElementById('manualHour').value) || 0;
       manualMinute = parseInt(document.getElementById('manualMinute').value) || 0;
